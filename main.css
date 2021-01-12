@@ -33,6 +33,18 @@
   text-transform: capitalize;
 }
 
+.message {
+  color: #fff;
+}
+
+.success {
+  background-color: green;
+}
+
+.failed {
+  background-color: red;
+}
+
 table {
   background-color: #ddd;
 }

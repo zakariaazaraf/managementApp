@@ -9,7 +9,8 @@
 
     
 
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
+
         $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
         $lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
@@ -23,14 +24,19 @@
                                                 Age = '$age',
                                                 Salary = '$salary',
                                                 Tax = '$tax'")){
-            echo "The Record Inserted successfully";
-
-            
+            $message = "$firstname Inserted successfully";
+            $success = true;
         }else{
-            echo "We Encountre some Issues";
+            $message = "$firstname Encountre some Issues";
+            $succes = false;
         }
 
-        
+        /* echo "Info: $firstname, $lastname, $age, $email, $salary, $tax";
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
+        $_POST = array();
+        unset($_POST); */
     }
 
     $query = "select * from employee";
@@ -61,7 +67,7 @@
                 <fieldset>
 
                     <legend>Employee Information:</legend>
-
+                    <p class="message<?php echo $success ? ' success': ' failed';?>"> <?= isset($message) ? $message : '' ?> </p>
                     <div class="form-group">
                         <label for="firstname">firstname:</label>
                         <input type="text" id="firstname" name="firstname" required>
