@@ -63,11 +63,14 @@
     <div class="wrapper">
         
             <div class="form-info">
-                <form class='formApp' action='<?php $_SERVER['PHP_SELF'] ?>' method='POST'>
+                <form class='formApp' method='POST' enctype="application/x-www-form-urlencoded">
                 <fieldset>
 
                     <legend>Employee Information:</legend>
-                    <p class="message<?php echo $success ? ' success': ' failed';?>"> <?= isset($message) ? $message : '' ?> </p>
+                     <?php if(isset($message)){?>
+                             <p class="message<?= $success ? ' success': ' failed'?>"> <?= $message?> </p> 
+                        <?php } ?>
+                    
                     <div class="form-group">
                         <label for="firstname">firstname:</label>
                         <input type="text" id="firstname" name="firstname" required>
