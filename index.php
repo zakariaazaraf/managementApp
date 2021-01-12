@@ -3,6 +3,39 @@
     require_once('db.php');
     require_once('employee.php');
 
+    /* if($db->exec("INSERT INTO employee set FirstName = 'زكرياء', LastName = 'الأزرف', Email = 'zakariaazaraf@gmail.com', Age = 23 ")){
+        echo "The Record Inserted successfully";
+    }else{
+        echo "We Encountre some Issues";
+    } */
+
+    $employee = new Employee();
+
+    $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
+    $lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
+    $age = filter_input(INPUT_POST, 'age', FILTER_SANITIZE_NUMBER_INT);
+    $salary = filter_input(INPUT_POST, 'salary', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $tax = filter_input(INPUT_POST, 'tax', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    
+
+    $query = "select * from employee";
+    $stat = $db->query($query);
+    /* $result = $stat->fetchAll(PDO::FETCH_BOTH); */
+    /* $result = $stat->fetchAll(PDO::FETCH_ASSOC); */
+
+    // PROFESSIONAL MAKE THE DATA MAP THE CLASS => "Object Relationel Maping"
+    /* $result = $stat->fetchAll(PDO::FETCH_OBJ); */
+    $result = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee');
+    echo "<pre>";
+    var_dump($result);
+    echo "</pre>";
+
+    foreach($result as $res){
+        echo "<br /> Calculate Salary : " . $res->calculateSalary();
+        
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
