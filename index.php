@@ -27,14 +27,6 @@
     // PROFESSIONAL MAKE THE DATA MAP THE CLASS => "Object Relationel Maping"
     /* $result = $stat->fetchAll(PDO::FETCH_OBJ); */
     $result = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee');
-    echo "<pre>";
-    var_dump($result);
-    echo "</pre>";
-
-    foreach($result as $res){
-        echo "<br /> Calculate Salary : " . $res->calculateSalary();
-        
-    }
 
 ?>
 <!DOCTYPE html>
@@ -108,42 +100,18 @@
                     
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>aaaaaa</td>
-                        <td>aaaaaa</td>
-                        <td>aaaaa@gmail.com</td>
-                        <td>22</td>
-                        <td>7000</td>
-                        <td>1.5</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>aaaaaa</td>
-                        <td>aaaaaa</td>
-                        <td>aaaaa@gmail.com</td>
-                        <td>22</td>
-                        <td>7000</td>
-                        <td>1.5</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>aaaaaa</td>
-                        <td>aaaaaa</td>
-                        <td>aaaaa@gmail.com</td>
-                        <td>22</td>
-                        <td>7000</td>
-                        <td>1.5</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>aaaaaa</td>
-                        <td>aaaaaa</td>
-                        <td>aaaaa@gmail.com</td>
-                        <td>22</td>
-                        <td>7000</td>
-                        <td>1.5</td>
-                    </tr>
+                    <?php foreach($result as $res){?>
+                        <tr>
+                            <td><?= $res->Id ?></td>
+                            <td><?= $res->FirstName ?></td>
+                            <td><?= $res->LastName ?></td>
+                            <td><?= $res->Email ?></td>
+                            <td><?= $res->calculateSalary() ?></td>
+                            <td><?= $res->tax ?></td>
+                        </tr>
+                        <?php
+                    }?>
+                    
                 </tbody>
             </table>
         </div>
