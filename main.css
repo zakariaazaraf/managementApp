@@ -1,0 +1,28 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 1.1rem;
+}
+
+.wrapper {
+  height: 60vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper > div {
+  flex-basis: 40%;
+  padding: 0.8rem;
+}
+
+.wrapper > div div {
+  display: flex;
+  padding: 0.5rem;
+}
+
+.wrapper > div div label {
+  flex-basis: 25%;
+}
