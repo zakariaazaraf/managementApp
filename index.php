@@ -5,11 +5,11 @@
 
     
 
-    $employee = new Employee();
+    
 
     
 
-    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])){
+    if(isset($_POST['submit'])){
 
         $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
         $lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
@@ -17,6 +17,8 @@
         $age = filter_input(INPUT_POST, 'age', FILTER_SANITIZE_NUMBER_INT);
         $salary = filter_input(INPUT_POST, 'salary', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $tax = filter_input(INPUT_POST, 'tax', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+
+        $employee = new Employee($firstname, $lastname, $email, $age, $salary, $tax);
         
         if($db->exec("INSERT INTO employee set FirstName = '$firstname',
                                                 LastName = '$lastname',
@@ -46,7 +48,8 @@
     /* $result = $stat->fetchAll(PDO::FETCH_OBJ); */
 
     // PROFESSIONAL MAKE THE DATA MAP THE CLASS => "Object Relationel Maping"
-    $result = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee');
+    /* $result = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee'); */
+    $result = $stat->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Employee', array('firstname', 'lastname', 'email', 'age', 'salary', 'tax'));
 
     $result = (is_array($result) && !empty($result)) ? $result : false;
 
