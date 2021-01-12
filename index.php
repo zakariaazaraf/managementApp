@@ -3,30 +3,46 @@
     require_once('db.php');
     require_once('employee.php');
 
-    /* if($db->exec("INSERT INTO employee set FirstName = 'زكرياء', LastName = 'الأزرف', Email = 'zakariaazaraf@gmail.com', Age = 23 ")){
-        echo "The Record Inserted successfully";
-    }else{
-        echo "We Encountre some Issues";
-    } */
+    
 
     $employee = new Employee();
 
-    $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
-    $lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
-    $age = filter_input(INPUT_POST, 'age', FILTER_SANITIZE_NUMBER_INT);
-    $salary = filter_input(INPUT_POST, 'salary', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-    $tax = filter_input(INPUT_POST, 'tax', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
+        $lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_STRING);
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
+        $age = filter_input(INPUT_POST, 'age', FILTER_SANITIZE_NUMBER_INT);
+        $salary = filter_input(INPUT_POST, 'salary', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $tax = filter_input(INPUT_POST, 'tax', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        
+        if($db->exec("INSERT INTO employee set FirstName = '$firstname',
+                                                LastName = '$lastname',
+                                                Email = '$email',
+                                                Age = '$age',
+                                                Salary = '$salary',
+                                                Tax = '$tax'")){
+            echo "The Record Inserted successfully";
+
+            
+        }else{
+            echo "We Encountre some Issues";
+        }
+
+        
+    }
 
     $query = "select * from employee";
     $stat = $db->query($query);
     /* $result = $stat->fetchAll(PDO::FETCH_BOTH); */
     /* $result = $stat->fetchAll(PDO::FETCH_ASSOC); */
+    /* $result = $stat->fetchAll(PDO::FETCH_OBJ); */
 
     // PROFESSIONAL MAKE THE DATA MAP THE CLASS => "Object Relationel Maping"
-    /* $result = $stat->fetchAll(PDO::FETCH_OBJ); */
     $result = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee');
+
+    $result = (is_array($result) && !empty($result)) ? $result : false;
 
 ?>
 <!DOCTYPE html>
@@ -41,7 +57,7 @@
     <div class="wrapper">
         
             <div class="form-info">
-                <form class='formApp' action='<?php $_SERVER['PHP_SELF'] ?>'>
+                <form class='formApp' action='<?php $_SERVER['PHP_SELF'] ?>' method='POST'>
                 <fieldset>
 
                     <legend>Employee Information:</legend>
@@ -95,21 +111,28 @@
                         <th>email</th>
                         <th>age</th>
                         <th>salary</th>
-                        <th>tax</th>
+                        <th>tax %</th>
                     </tr>
                     
                 </thead>
                 <tbody>
-                    <?php foreach($result as $res){?>
+
+                    <?php if($result){foreach($result as $res){?>
+
                         <tr>
                             <td><?= $res->Id ?></td>
                             <td><?= $res->FirstName ?></td>
                             <td><?= $res->LastName ?></td>
                             <td><?= $res->Email ?></td>
-                            <td><?= $res->calculateSalary() ?></td>
+                            <td><?= $res->Age ?></td>
+                            <td><?= $res->calculateSalary() ?> DH</td>
                             <td><?= $res->tax ?></td>
                         </tr>
+
                         <?php
+                        }
+                    }else{
+                        echo "<td colspan='7'>We Haven't Any Data To Desplay !</td>";
                     }?>
                     
                 </tbody>
