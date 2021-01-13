@@ -1,31 +1,34 @@
 <?php 
     class Employee{
 
-        /* public $id;
-        public $firstName;
-        public $lastName;
-        public $email;
-        public $age;
-        public $salary;
-        public $tax; */
+        /* public $Id;
+        public $FirstName;
+        public $LastName;
+        public $Email;
+        public $Age;
+        public $Salary;
+        public $Tax; */
 
-        private $id;
-        private $firstName;
-        private $lastName;
-        private $email;
-        private $age;
-        private $salary;
-        private $tax;
+        private $Id;
+        private $FirstName;
+        private $LastName;
+        private $Email;
+        private $Age;
+        private $Salary;
+        private $Tax;
+
 
         // IF YOU WANT TO BIND THE DATA WITH THE CLASS IT DOESN'T MAKE SENSE TO MAKE THIS CONSTRUCTOR
 
-        public function __construct($id, $firstname, $lastname, $email, $age){
-            $this->id = $id;
+        /* public function __construct($firstname, $lastname, $email, $age, $salary, $tax){
+            //$this->id = $id;
             $this->firstname = $firstname;
             $this->lastname = $lastname;
             $this->email = $email;
             $this->age = $age;
-        }
+            $this->salary = $salary;
+            $this->tax = $tax;
+        } */
 
         // TO ACESS VARIABLES 
         public function __get($props){
@@ -33,7 +36,7 @@
         }
 
         public function calculateSalary(){
-            return $this->salary - (($this->salary * $this->tax) / 100);
+            return $this->Salary - (($this->Salary * $this->Tax) / 100);
         }
     }
 ?>

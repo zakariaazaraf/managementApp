@@ -63,6 +63,11 @@ table tbody tr td {
   padding: 3px 10px 3px 0;
 }
 
+table tbody tr td a i {
+  padding: 0 3px;
+  color: #5aae3c;
+}
+
 table tbody tr td {
   text-align: center;
 }
