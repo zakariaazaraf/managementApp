@@ -20,14 +20,14 @@
 
         // IF YOU WANT TO BIND THE DATA WITH THE CLASS IT DOESN'T MAKE SENSE TO MAKE THIS CONSTRUCTOR
 
-        /* public function __construct($firstname, $lastname, $email, $age, $salary, $tax){
-            //$this->id = $id;
-            $this->firstname = $firstname;
-            $this->lastname = $lastname;
-            $this->email = $email;
-            $this->age = $age;
-            $this->salary = $salary;
-            $this->tax = $tax;
+        /* public function __construct($id, $firstname, $lastname, $email, $age, $salary, $tax){
+            $this->Id = $id;
+            $this->FirstName = $firstname;
+            $this->LastName = $lastname;
+            $this->Email = $email;
+            $this->Email = $age;
+            $this->Salary = $salary;
+            $this->Tax = $tax; 
         } */
 
         // TO ACESS VARIABLES 

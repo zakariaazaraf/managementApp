@@ -4,7 +4,7 @@
     require_once('employee.php');
 
     
-    $employee = new Employee();
+    
 
     if(isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])){
         $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
@@ -16,14 +16,11 @@
             $data = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee');
 
             $data = (is_array($data) && !empty($data)) ? array_shift($data) : false;
-            
-            echo "<pre>";
-            print_r($data->FirstName);
-            echo "</pre>";
+                      
         }   
     }
 
-    
+    echo "<h3>Data Set ". isset($data) && !empty($data) ? 'True':'False' ."</h3>";
 
     if(isset($_POST['submit'])){
 
@@ -34,7 +31,7 @@
         $salary = filter_input(INPUT_POST, 'salary', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $tax = filter_input(INPUT_POST, 'tax', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
-        //$employee = new Employee($firstname, $lastname, $email, $age, $salary, $tax);
+        $employee = new Employee($id, $firstname, $lastname, $email, $age, $salary, $tax);
 
         $query = "INSERT INTO employee set FirstName = :firstname,
                                             LastName = :lastname,
@@ -76,9 +73,10 @@
 
     
     
-    $result = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee');
+    $result = $stat->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Employee');
 
     $result = (is_array($result) && !empty($result)) ? $result : false;
+
 
 ?>
 <!DOCTYPE html>
