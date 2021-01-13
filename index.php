@@ -14,14 +14,13 @@
             $stat = $db->prepare($query);
             $foundUser = $stat->execute(array(':id' => $id));
             if($foundUser){
-                $data = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee');
-                $data = (is_array($data) && !empty($data)) ? array_shift($data) : false;
+                $user = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee');
+                $user = (is_array($user) && !empty($user)) ? array_shift($user) : false;
             }
                               
         }   
     }
 
-    echo "<h3>Data Set ". isset($data) && !empty($data) ? 'True':'False' ."</h3>";
 
     if(isset($_POST['submit'])){
 
@@ -103,33 +102,33 @@
                     
                     <div class="form-group">
                         <label for="firstname">firstname:</label>
-                        <input type="text" id="firstname" name="firstname" required>
+                        <input type="text" id="firstname" name="firstname" required value="<?= isset($user) ? $user->FirstName : ''?>">
                     </div>
                     
 
                     <div class="form-group">
                         <label for="lastname">lastname:</label>
-                        <input type="text" id="lastname" name="lastname" required>
+                        <input type="text" id="lastname" name="lastname" required value="<?= isset($user) ? $user->LastName : ''?>">
                     </div>
                     
                     <div class="form-group">
                         <label for="email">email:</label>
-                        <input type="text" id="email" name="email" required>
+                        <input type="text" id="email" name="email" required value="<?= isset($user) ? $user->Email : ''?>">
                     </div>
                     
                     <div class="form-group">
                         <label for="age">age:</label>
-                        <input type="number" id="age" name="age" required min="20" max="75">
+                        <input type="number" id="age" name="age" required min="20" max="75" value="<?= isset($user) ? $user->Age : ''?>">
                     </div>
                     
                     <div class="form-group">
                         <label for="salary">salary:</label>
-                        <input type="number" id="salary" name="salary" required min="2000" max="10000" step="25">
+                        <input type="number" id="salary" name="salary" required min="2000" max="10000" step="25" value="<?= isset($user) ? $user->Salary : ''?>">
                     </div>
                     
                     <div class="form-group">
                         <label for="tax">tax:</label>
-                        <input type="number" id="tax" name="tax" required min="1" max="5" step='.1'>
+                        <input type="number" id="tax" name="tax" required min="1" max="5" step='.1' value="<?= isset($user) ? $user->Tax : ''?>">
                     </div>
                     
                     <div class="form-group">
