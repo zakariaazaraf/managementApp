@@ -12,11 +12,12 @@
 
             $query = "select * from employee WHERE Id = :id";
             $stat = $db->prepare($query);
-            $stat->execute(array(':id' => $id));
-            $data = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee');
-
-            $data = (is_array($data) && !empty($data)) ? array_shift($data) : false;
-                      
+            $foundUser = $stat->execute(array(':id' => $id));
+            if($foundUser){
+                $data = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee');
+                $data = (is_array($data) && !empty($data)) ? array_shift($data) : false;
+            }
+                              
         }   
     }
 
