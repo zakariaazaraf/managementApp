@@ -31,31 +31,46 @@
         $salary = filter_input(INPUT_POST, 'salary', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $tax = filter_input(INPUT_POST, 'tax', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
-        $employee = new Employee($id, $firstname, $lastname, $email, $age, $salary, $tax);
+        //$employee = new Employee($id, $firstname, $lastname, $email, $age, $salary, $tax);
 
-        $query = "INSERT INTO employee set FirstName = :firstname,
-                                            LastName = :lastname,
-                                            Email = :email,
-                                            Age = :age,
-                                            Salary = :salary,
-                                            Tax = :tax";
-
-        $stat = $db->prepare($query);
-        
-       /*  if($stat->execute(array(
+        $param = array(
             ':firstname' => $firstname,
              ':lastname' => $lastname,
               ':email' => $email,
                ':age' => $age,
                 ':salary' => $salary,
                  ':tax' => $tax
-                 ))){
-            $message = "$firstname Inserted successfully";
+        );
+
+        if(isset($user)){
+            $query = "INSERT INTO employee set FirstName = :firstname,
+                                            LastName = :lastname,
+                                            Email = :email,
+                                            Age = :age,
+                                            Salary = :salary,
+                                            Tax = :tax
+                                            WHERE 
+                                            Id = :id";
+            $param[':id'] = $id;
+        }else{
+            $query = "INSERT INTO employee set FirstName = :firstname,
+                                            LastName = :lastname,
+                                            Email = :email,
+                                            Age = :age,
+                                            Salary = :salary,
+                                            Tax = :tax";
+        }
+
+
+        $stat = $db->prepare($query);
+        
+        if($stat->execute()){
+            $message = "$firstname Saved successfully";
             $success = true;
         }else{
             $message = "$firstname Encountre some Issues";
             $succes = false;
-        } */
+        }
 
     }
 
