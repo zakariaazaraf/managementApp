@@ -5,7 +5,7 @@
     require_once('db.php');
     require_once('employee.php');
 
-    
+    // GET THE DATA OF A SPECIFI EMPLOYEE TO UPDATE IT
     if(isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])){
         $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
         if($id > 0){
@@ -23,6 +23,22 @@
         unset($_SESSION['message']);
     }
 
+    // DELETE THE EMPLOYEE
+    if(isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])){
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        if($id > 0){
+
+            $query = "DELETE FROM employee WHERE Id = :id";
+            $stat = $db->prepare($query);
+            $deleted = $stat->execute(array(':id' => $id));
+            if($deleted){
+                $_SESSION['message'] = "Employee Deleted successfully";
+                $_SESSION['success'] = true;
+            }
+                              
+        }
+        
+    }
 
     if(isset($_POST['submit'])){
 
