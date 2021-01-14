@@ -4,9 +4,12 @@
 
 
     $employee = new Employee('aaa', 'aaa', 'aa@aa.com', 23, 7000, 2.3);
-    //echo "<pre>";
-    $result = $employee::getAll();
-    //echo "</pre>";
+    
+    $result = $employee::getByPk(27)->delete();
+    echo "<pre>";
+    var_dump($result);
+    echo "</pre>";
+    
 
 ?>
 
@@ -26,7 +29,7 @@
                 </thead>
                 <tbody>
 
-                    <?php if($result){foreach($result as $res){?>
+                    <?php if(is_array($result) && !empty($result)){foreach($result as $res){?>
 
                         <tr>
                             <td><?= $res->Id ?></td>
@@ -40,6 +43,18 @@
 
                         <?php
                         }
+                    }elseif(is_object($result)){
+                        ?>
+                            <tr>
+                            <td><?= $result->Id ?></td>
+                            <td><?= $result->FirstName ?></td>
+                            <td><?= $result->LastName ?></td>
+                            <td><?= $result->Email ?></td>
+                            <td><?= $result->Age ?></td>
+                            <td><?= $result->calculateSalary()?> DH</td>
+                            <td><?= $result->Tax ?></td>
+                        </tr>
+                        <?php
                     }else{
                         echo "<td colspan='7'>We Haven't Any Data To Desplay !</td>";
                     }?>

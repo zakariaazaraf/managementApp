@@ -76,6 +76,30 @@
             $sql = "SELECT * FROM " . static::$tableName;
             $stat = $db->prepare($sql);
             // get_called_class() => THE NAME OF THE CLASS THAT CALLED THIS FUNCTION
-            return $stat->execute() ? $stat->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, get_called_class(), array_keys(static::$tableSchema)) : false;
+            return $stat->execute() 
+                                    ? $stat->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE,
+                                                        get_called_class(),
+                                                        array_keys(static::$tableSchema)
+                                                    ) 
+                                    : false;
+        }
+
+        public static function getByPk($pk){
+            global $db;
+            $sql = "SELECT * FROM " . static::$tableName . " WHERE " 
+                                    . static::$primaryKey . " = " 
+                                    . $pk;
+            $stat = $db->prepare($sql);
+            // get_called_class() => THE NAME OF THE CLASS THAT CALLED THIS FUNCTION
+            if($stat->execute()){
+                $obj = $stat->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE,
+                                                        get_called_class(),
+                                                        array_keys(static::$tableSchema)
+                );
+
+                return array_shift($obj);           
+                
+            }                            
+            return false; 
         }
     }
