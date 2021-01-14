@@ -188,7 +188,7 @@
                             <td><?= $res->Tax ?></td>
                             <td>
                                 <a href='index.php?action=edit&id=<?= $res->Id?>'><i class="fas fa-edit"></i></a>
-                                <a href='index.php ?action=delete&id=<?= $res->Id?>'><i class='fas fa-trash'></i></a>
+                                <a href='index.php ?action=delete&id=<?= $res->Id?>' onclick="if(!confirm('You Want  To Delete <?= $res->FirstName?>')){ return false; } "><i class='fas fa-trash'></i></a>
                             </td>
                         </tr>
 
