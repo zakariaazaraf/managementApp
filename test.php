@@ -5,10 +5,9 @@
 
     $employee = new Employee('aaa', 'aaa', 'aa@aa.com', 23, 7000, 2.3);
     
-    $result = $employee::getByPk(27)->delete();
-    echo "<pre>";
-    var_dump($result);
-    echo "</pre>";
+    $result = $employee::getByPk(8);
+    $result->setFirsName('AYOUBE');
+    $result->update();
     
 
 ?>

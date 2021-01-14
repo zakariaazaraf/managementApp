@@ -42,6 +42,10 @@
             return $this->$props;
         }
 
+        public function setFirsName($name){
+            $this->FirstName = $name;
+        }
+
         public function calculateSalary(){
             return $this->Salary - (($this->Salary * $this->Tax) / 100);
         }
