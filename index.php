@@ -14,7 +14,7 @@
             $stat = $db->prepare($query);
             $foundUser = $stat->execute(array(':id' => $id));
             if($foundUser){
-                $user = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee');
+                $user = $stat->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Employee', array('firstname', 'lastname', 'email', 'age', 'salary', 'tax'));
                 $user = (is_array($user) && !empty($user)) ? array_shift($user) : false;
             }
                               
@@ -49,7 +49,7 @@
         $salary = filter_input(INPUT_POST, 'salary', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $tax = filter_input(INPUT_POST, 'tax', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
-        //$employee = new Employee($id, $firstname, $lastname, $email, $age, $salary, $tax);
+        
 
         $param = array(
             ':firstname' => $firstname,
@@ -109,7 +109,7 @@
     /* $result = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee'); */
 
     // YOU CAN USE THE CONSTRCUCTOR BY PASSING AN ARRAY
-    $result = $stat->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Employee');
+    $result = $stat->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Employee', array('firstname', 'lastname', 'email', 'age', 'salary', 'tax'));
 
     $result = (is_array($result) && !empty($result)) ? $result : false;
 
