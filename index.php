@@ -1,11 +1,11 @@
 <?php 
 
+    session_start();
+
     require_once('db.php');
     require_once('employee.php');
 
     
-    
-
     if(isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])){
         $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
         if($id > 0){
@@ -18,7 +18,9 @@
                 $user = (is_array($user) && !empty($user)) ? array_shift($user) : false;
             }
                               
-        }   
+        }
+        
+        unset($_SESSION['message']);
     }
 
 
@@ -42,8 +44,8 @@
                  ':tax' => $tax
         );
 
-        if(isset($user)){
-            $query = "INSERT INTO employee set FirstName = :firstname,
+        if(isset($user) && !empty($user)){
+            $query = "UPDATE employee set FirstName = :firstname,
                                             LastName = :lastname,
                                             Email = :email,
                                             Age = :age,
@@ -64,17 +66,21 @@
 
         $stat = $db->prepare($query);
         
-        if($stat->execute()){
-            $message = "$firstname Saved successfully";
-            $success = true;
+        if($stat->execute($param)){
+            $_SESSION['message'] = "$firstname Saved successfully";
+            $_SESSION['success'] = true;
+            
         }else{
-            $message = "$firstname Encountre some Issues";
-            $succes = false;
+            $_SESSION['message'] = "$firstname Encountre some Issues";
+            $_SESSION['success'] = false;
         }
+
+        header('Location: index.php');
+            exit();
 
     }
 
-    
+
 
     $query = "select * from employee";
     $stat = $db->query($query);
@@ -86,8 +92,7 @@
     // PROFESSIONAL MAKE THE DATA MAP THE CLASS => "Object Relationel Maping"
     /* $result = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee'); */
 
-    
-    
+    // YOU CAN USE THE CONSTRCUCTOR BY PASSING AN ARRAY
     $result = $stat->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Employee');
 
     $result = (is_array($result) && !empty($result)) ? $result : false;
@@ -111,10 +116,10 @@
                 <fieldset>
 
                     <legend>Employee Information:</legend>
-                     <?php if(isset($message)){?>
-                             <p class="message<?= $success ? ' success': ' failed'?>"> <?= $message?> </p> 
-                        <?php } ?>
-                    
+                     <?php if(isset($_SESSION['message'])){?>
+                             <p class="message<?= $_SESSION['success'] ? ' success': ' failed'?>"> <?= $_SESSION['message']?> </p> 
+                        <?php unset($_SESSION['message']);} ?>
+                     
                     <div class="form-group">
                         <label for="firstname">firstname:</label>
                         <input type="text" id="firstname" name="firstname" required value="<?= isset($user) ? $user->FirstName : ''?>">
