@@ -14,6 +14,7 @@
         private $Salary;
         private $Tax;
 
+        protected static $primaryKey = 'Id';
         protected static $tableName = "employee";
         protected static $tableSchema = array(
             //'Id'               => self::DATA_TYPE_INT,
@@ -24,12 +25,7 @@
             'Salary'           => self::DATA_TYPE_DECIMAL,
             'Tax'              => self::DATA_TYPE_DECIMAL
         );
-
-
-        // IF YOU WANT TO BIND THE DATA WITH THE CLASS IT DOESN'T MAKE SENSE TO MAKE THIS CONSTRUCTOR
-
-        //public function __construct(){}
-        
+       
 
         public function __construct( $firstname, $lastname, $email, $age, $salary, $tax){
             //$this->Id = $id;
@@ -49,5 +45,6 @@
         public function calculateSalary(){
             return $this->Salary - (($this->Salary * $this->Tax) / 100);
         }
+
     }
 ?>
