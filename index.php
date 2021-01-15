@@ -98,8 +98,8 @@
 
 
 
-    $query = "select * from employee";
-    $stat = $db->query($query);
+    /* $query = "select * from employee";
+    $stat = $db->query($query); */
 
     /* $result = $stat->fetchAll(PDO::FETCH_BOTH); */
     /* $result = $stat->fetchAll(PDO::FETCH_ASSOC); */
@@ -109,9 +109,11 @@
     /* $result = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee'); */
 
     // YOU CAN USE THE CONSTRCUCTOR BY PASSING AN ARRAY
-    $result = $stat->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Employee', array('firstname', 'lastname', 'email', 'age', 'salary', 'tax'));
-
-    $result = (is_array($result) && !empty($result)) ? $result : false;
+    //$result = $stat->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Employee', array('firstname', 'lastname', 'email', 'age', 'salary', 'tax'));
+    $employee = new Employee(null, null, null, null, null, null);
+    //$result = $employee::getAll();
+    $result = $employee::getByPk(3);
+    
 
 
 ?>
@@ -192,7 +194,7 @@
                 </thead>
                 <tbody>
 
-                    <?php if($result){foreach($result as $res){?>
+                    <?php if(is_array($result) && !empty($result)){foreach($result as $res){?>
 
                         <tr>
                             <td><?= $res->Id ?></td>
@@ -210,6 +212,22 @@
 
                         <?php
                         }
+                    }elseif(is_object($result)){
+                        ?>
+                            <tr>
+                            <td><?= $result->Id ?></td>
+                            <td><?= $result->FirstName ?></td>
+                            <td><?= $result->LastName ?></td>
+                            <td><?= $result->Email ?></td>
+                            <td><?= $result->Age ?></td>
+                            <td><?= $result->calculateSalary()?> DH</td>
+                            <td><?= $result->Tax ?></td>
+                            <td>
+                                <a href='index.php?action=edit&id=<?= $result->Id?>'><i class="fas fa-edit"></i></a>
+                                <a href='index.php ?action=delete&id=<?= $result->Id?>' onclick="if(!confirm('You Want  To Delete <?= $res->FirstName?>')){ return false; } "><i class='fas fa-trash'></i></a>
+                            </td>
+                        </tr>
+                        <?php
                     }else{
                         echo "<td colspan='7'>We Haven't Any Data To Desplay !</td>";
                     }?>
