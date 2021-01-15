@@ -17,28 +17,26 @@
 
         $employee = new Employee($firstname, $lastname, $email, $age, $salary, $tax);
 
-          
-
         if(isset($_GET['action']) && $_GET['action'] == 'edit'){
             
             $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
             if($id > 0){
                 
-                //$employee->setFirsName($firstname);
                 $saved = $employee::getByPk($id);
+                // USE GETTERS TO UPDATE THE EMPLOYEE
                 $saved->setFirsName($firstname);
                 $saved->setLastName($lastname);
                 $saved->setEmail($email);
                 $saved->setAge($age);
                 $saved->setSalary($salary);
                 $saved->setTax($tax);
-                $saved->update();
+
+                $saved->save();
             }
             
         }else{
             
-            $saved = $employee->create();
-                                         
+            $saved = $employee->save();                                        
         }
 
         if($saved){
@@ -61,7 +59,6 @@
         if($id > 0){
             $employee = new Employee(null, null, null, null, null, null);
             $user = $employee::getByPk($id);
-            unset($employee);
         }
         
         unset($_SESSION['message']);
@@ -83,7 +80,6 @@
         
     }
 
-    
 
     /* $result = $stat->fetchAll(PDO::FETCH_BOTH); */
     /* $result = $stat->fetchAll(PDO::FETCH_ASSOC); */
@@ -94,6 +90,8 @@
 
 
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

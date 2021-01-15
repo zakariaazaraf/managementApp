@@ -32,7 +32,7 @@
         }
 
         // CREATE A NEW RECORD
-        public function create(){
+        private function create(){
             global $db;
 
             $sql = "INSERT INTO " . static::$tableName . " SET " . self::buildNamesParamsSQL();
@@ -43,7 +43,7 @@
         }
 
         // UPDATE A RECORD
-        public function update(){
+        private function update(){
             global $db;
 
             $sql = "UPDATE " . static::$tableName . " SET " 
@@ -56,6 +56,11 @@
             $this->prepareValues($stat);
             return $stat->execute();
         
+        }
+
+        // REPLACE CREATE AND UPDATE BY SAVE FUNCTION
+        public function save(){
+            return $this->{static::$primaryKey} === null ? $this->create() : $this->update();
         }
 
         // DELETE A RECORD
