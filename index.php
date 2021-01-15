@@ -5,41 +5,7 @@
     require_once('db.php');
     require_once('employee.php');
 
-    // GET THE DATA OF A SPECIFI EMPLOYEE TO UPDATE IT
-    if(isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])){
-        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-        if($id > 0){
-
-            $query = "select * from employee WHERE Id = :id";
-            $stat = $db->prepare($query);
-            $foundUser = $stat->execute(array(':id' => $id));
-            if($foundUser){
-                $user = $stat->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Employee', array('firstname', 'lastname', 'email', 'age', 'salary', 'tax'));
-                $user = (is_array($user) && !empty($user)) ? array_shift($user) : false;
-            }
-                              
-        }
-        
-        unset($_SESSION['message']);
-    }
-
-    // DELETE THE EMPLOYEE
-    if(isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])){
-        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-        if($id > 0){
-
-            $query = "DELETE FROM employee WHERE Id = :id";
-            $stat = $db->prepare($query);
-            $deleted = $stat->execute(array(':id' => $id));
-            if($deleted){
-                $_SESSION['message'] = "Employee Deleted successfully";
-                $_SESSION['success'] = true;
-            }
-                              
-        }
-        
-    }
-
+    // SUBMIT =>  UPDATE & CREATE EMPLOYEE
     if(isset($_POST['submit'])){
 
         $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_STRING);
@@ -49,40 +15,33 @@
         $salary = filter_input(INPUT_POST, 'salary', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $tax = filter_input(INPUT_POST, 'tax', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
-        
+        $employee = new Employee($firstname, $lastname, $email, $age, $salary, $tax);
 
-        $param = array(
-            ':firstname' => $firstname,
-             ':lastname' => $lastname,
-              ':email' => $email,
-               ':age' => $age,
-                ':salary' => $salary,
-                 ':tax' => $tax
-        );
+          
 
-        if(isset($user) && !empty($user)){
-            $query = "UPDATE employee set FirstName = :firstname,
-                                            LastName = :lastname,
-                                            Email = :email,
-                                            Age = :age,
-                                            Salary = :salary,
-                                            Tax = :tax
-                                            WHERE 
-                                            Id = :id";
-            $param[':id'] = $id;
+        if(isset($_GET['action']) && $_GET['action'] == 'edit'){
+            
+            $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+            if($id > 0){
+                
+                //$employee->setFirsName($firstname);
+                $saved = $employee::getByPk($id);
+                $saved->setFirsName($firstname);
+                $saved->setLastName($lastname);
+                $saved->setEmail($email);
+                $saved->setAge($age);
+                $saved->setSalary($salary);
+                $saved->setTax($tax);
+                $saved->update();
+            }
+            
         }else{
-            $query = "INSERT INTO employee set FirstName = :firstname,
-                                            LastName = :lastname,
-                                            Email = :email,
-                                            Age = :age,
-                                            Salary = :salary,
-                                            Tax = :tax";
+            
+            $saved = $employee->create();
+                                         
         }
 
-
-        $stat = $db->prepare($query);
-        
-        if($stat->execute($param)){
+        if($saved){
             $_SESSION['message'] = "$firstname Saved successfully";
             $_SESSION['success'] = true;
             
@@ -91,29 +50,47 @@
             $_SESSION['success'] = false;
         }
 
-        header('Location: index.php');
-            exit();
+         header('Location: index.php');
+            exit(); 
 
     }
 
+    // GET THE DATA OF A SPECIFI EMPLOYEE TO UPDATE IT
+    if(isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['id'])){
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        if($id > 0){
+            $employee = new Employee(null, null, null, null, null, null);
+            $user = $employee::getByPk($id);
+            unset($employee);
+        }
+        
+        unset($_SESSION['message']);
+    }
 
+    // DELETE THE EMPLOYEE
+    if(isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id'])){
+        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        if($id > 0){
+            $employee = new Employee(null, null, null, null, null, null);
+            $deleted = $employee::getByPk($id)->delete();
+            unset($employee);
+            if($deleted){
+                $_SESSION['message'] = "Employee Deleted successfully";
+                $_SESSION['success'] = true;
+            }
+                              
+        }
+        
+    }
 
-    /* $query = "select * from employee";
-    $stat = $db->query($query); */
+    
 
     /* $result = $stat->fetchAll(PDO::FETCH_BOTH); */
     /* $result = $stat->fetchAll(PDO::FETCH_ASSOC); */
     /* $result = $stat->fetchAll(PDO::FETCH_OBJ); */
 
-    // PROFESSIONAL MAKE THE DATA MAP THE CLASS => "Object Relationel Maping"
-    /* $result = $stat->fetchAll(PDO::FETCH_CLASS, 'Employee'); */
-
-    // YOU CAN USE THE CONSTRCUCTOR BY PASSING AN ARRAY
-    //$result = $stat->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Employee', array('firstname', 'lastname', 'email', 'age', 'salary', 'tax'));
     $employee = new Employee(null, null, null, null, null, null);
-    //$result = $employee::getAll();
-    $result = $employee::getByPk(3);
-    
+    $result = $employee::getAll();
 
 
 ?>

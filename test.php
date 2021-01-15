@@ -5,8 +5,8 @@
 
     $employee = new Employee('aaa', 'aaa', 'aa@aa.com', 23, 7000, 2.3);
     
-    $result = $employee::getByPk(8);
-    $result->setFirsName('AYOUBE');
+    $result = $employee::getByPk(14);
+    $result->setFirsName('zakaria');
     $result->update();
     
 

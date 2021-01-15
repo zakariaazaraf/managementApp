@@ -42,8 +42,23 @@
             return $this->$props;
         }
 
-        public function setFirsName($name){
-            $this->FirstName = $name;
+        public function setFirsName($firstname){
+            $this->FirstName = $firstname;
+        }
+        public function setLastName($LastName){
+            $this->LastName = $LastName;
+        }
+        public function setEmail($Email){
+            $this->Email = $Email;
+        }
+        public function setAge($Age){
+            $this->Age = $Age;
+        }
+        public function setSalary($Salary){
+            $this->Salary = $Salary;
+        }
+        public function setTax($Tax){
+            $this->Tax = $Tax;
         }
 
         public function calculateSalary(){
